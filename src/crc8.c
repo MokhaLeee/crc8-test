@@ -1,4 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "crc8.h"
+
+#if 1
+#define DEBUG_DUMP printf
+#else
+#define DEBUG_DUMP
+#endif
 
 void crc8_populate_msb(uint8_t table[CRC8_TABLE_SIZE], uint8_t polynomial)
 {
@@ -41,8 +49,10 @@ static const uint8_t default_crc_ref_table[CRC8_TABLE_SIZE] = {
 uint8_t crc8_ext(const uint8_t table[CRC8_TABLE_SIZE], const uint8_t *pdata, size_t nbytes, uint8_t crc)
 {
 	/* loop over the buffer data */
-	while (nbytes-- > 0)
-		crc = table[(crc ^ *pdata++) & 0xff];
+	while (nbytes-- > 0) {
+		DEBUG_DUMP("%s: one step %#x %#x\n", __FUNCTION__, crc, *pdata);
+        crc = table[(crc ^ *pdata++) & 0xff];
+    }
 
 	return crc;
 }

@@ -5,12 +5,9 @@
 
 uint8_t crc_ref_table[CRC8_TABLE_SIZE];
 
-int main(int argc, char **argv)
+void debug_test(void)
 {
     int i, j;
-
-    uint32_t test_buf = 0xB2A610;
-
     crc8_populate_msb(crc_ref_table, CRC8_DEFAULT_POLYNOMIAL);
 
     fprintf(stdout, "default crc_ref_table:\n\t");
@@ -20,10 +17,19 @@ int main(int argc, char **argv)
         }
         fprintf(stdout, "\n\t");
     }
+}
 
-    fprintf(stdout, "\n");
-    fprintf(stdout, "test crc8 is: %#x\n", crc8_ext(crc_ref_table, (const uint8_t *)&test_buf, sizeof(test_buf), 0));
-    fprintf(stdout, "test crc8 is: %#x\n", crc8((const uint8_t *)&test_buf, sizeof(test_buf)));
+int main(int argc, char **argv)
+{
+    uint8_t crc;
+    uint8_t data[] = {0xAA, 0, 0, 5, 0x6F, 9, 10, 11, 1, 1};
+
+#if 0
+    debug_test();
+#endif
+
+    crc = crc8(data, sizeof(data));
+    fprintf(stdout, "test crc8 is: %#x\n", crc);
 
     exit(EXIT_SUCCESS);
 }
